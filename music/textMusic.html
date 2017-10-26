@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="css/music.css"/>
+        <link rel="stylesheet" href="css/swiper-3.4.2.min.css" />
+
+	</head>
+	<body>
+		
+		<audio id="song" src=""></audio>
+		
+		<!-- Swiper -->
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide menu">Menu slide</div>
+			<div class="swiper-slide content">
+				
+				<header>
+					<ul>
+						<li>
+							<div class="menu-button">
+							<div class="bar"></div>
+							<div class="bar"></div>
+							<div class="bar"></div>
+				            </div>
+						</li>
+						<li>右边痿哥音乐</li>
+						<li><span class="iconfont">&#xe650;</span></li>
+					</ul>
+				</header>
+				
+				<div class="section">
+					<ul id = "musicIfo">
+						<!--<li class="on"><p>乐库歌曲1</p><span>周杰伦</span></li>
+						<li class="on"><p>乐库歌曲1</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲2</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲3</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲4</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲5</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲6</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲7</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲8</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲9</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲10</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲11</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲12</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲13</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲14</p><span>周杰伦</span></li>
+						<li><p>乐库歌曲15</p><span>周杰伦</span></li>-->
+					</ul>
+				</div>
+				
+				<div class="section1">
+					<div class="sec1Miao">00:00</div>
+					<div class="sec1Left">
+						<div id="progressBar">
+           				<div id="progressBar_Track"></div>
+                        </div>
+					</div>
+					<div class="sec1Right">00:00</div>
+				</div>
+				
+				<footer>
+					<ul>
+						<li><img id="singerPic" src="img/zhangLiangYing.png"/></li>
+						<li id="prov"><span class="iconfont">&#xe6d4;</span></li>
+						<li id="pause"><span class="iconfont">&#xe63a;</span></li>
+						<li id="next"><span class="iconfont">&#xe600;</span></li>
+						<li><span class="iconfont">&#xe602;</span></li>
+					</ul>
+				</footer>
+			</div>
+		</div>
+		
+		
+	</div>
+			
+		
+	</body>
+	<script src="js/swiper-3.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>-->
+	<script src="jquery/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+		
+		var arr = new Array();
+		var song = document.getElementById("song");
+//		var picXuan = document.getElementById("singerPic");
+		var isPlay = 0;
+		var index = '';
+		var lis = '';
+		var isXuan  = '';
+		
+		
+		$.ajax({
+			type:"get",
+			url:"json/pbl.json",
+			success:function(eve){
+//				console.log(eve);
+				for(var i=0; i<eve.length; i++){
+//					console.log(eve[i].src);
+					arr.push(eve[i].src);
+					$("#musicIfo").append("<li imgSrc="+eve[i].img+" musicSrc="+eve[i].src+"><p>"+eve[i].musicName+"</p><span>"+eve[i].name+"</span></li>");
+				}
+				
+				lis = $("#musicIfo").find("li");
+			
+				$("#musicIfo").find("li").click(function(){
+					$(this).addClass("on").siblings().removeClass("on");
+					index = $(this).index();
+					beginMusic(index);
+					if(isXuan == 1){
+//          	isXuan = 0;
+            	proventXuan();
+//          	picStart();
+            }
+					
+//					changeDuration();
+				});		
+//				chushihua(0);
+			}	
+		});
+		
+		
+		
+		$("#pause").click(function(){
+			if(isPlay == 0){
+				isPlay = 1;
+//				alert(song.src);
+				song.play();
+				$(this).find("span").html("&#xe66a;");
+				changeDuration();
+				xuanzhuanPic();
+				
+			}else if(isPlay == 1){
+				isPlay = 0;
+				song.pause();
+				$(this).find("span").html("&#xe63a;");
+				proventXuan();
+			}
+		});
+		
+		
+		
+		$("#next").click(function(){
+//			alert(index);
+//          var lis = $("#musicIfo").find("li");
+//          alert(lis.length);
+
+            if(isXuan == 1){
+//          	isXuan = 0;
+            	proventXuan();
+//          	picStart();
+            }
+            if(index == lis.length - 1){
+            	index = 0;
+            	lis.eq(index).addClass("on").siblings().removeClass("on");
+            	beginMusic(index);  
+            }else{
+            	index += 1;
+            	lis.eq(index).addClass("on").siblings().removeClass("on");
+            	beginMusic(index);  	
+            }			
+		});
+		
+		
+		$("#prov").click(function(){
+//			alert(index);
+//          var lis = $("#musicIfo").find("li");
+//          alert(lis.length);
+            if(isXuan == 1){
+//          	isXuan = 0;
+            	proventXuan();
+            }
+            
+//          xuanzhuanPic();
+            
+            if(index == 0){
+            	index = lis.length - 1;
+            	lis.eq(index).addClass("on").siblings().removeClass("on");
+            	beginMusic(index);             	           	
+            }else{
+            	index -= 1;
+            	lis.eq(index).addClass("on").siblings().removeClass("on");
+            	beginMusic(index);  	
+            }			
+		});
+		
+		function xuanzhuanPic(){
+		    var picXuan = document.getElementById("singerPic");
+			picXuan.style.animationPlayState = "running"
+			picXuan.style.animationName = "xuanzhuan";
+			picXuan.style.animationDuration = "8s";
+			picXuan.style.animationTimingFunction = "linear";
+			picXuan.style.animationIterationCount = "infinite";
+			picXuan.style.animationFillMode = "forwards";
+            
+            isXuan = 1; 
+		}
+		
+		function proventXuan(){
+//          picXuan.style.animationName = "";
+		    var picXuan = document.getElementById("singerPic");
+            picXuan.style.animationPlayState = "paused";
+		}
+		
+		
+		function beginMusic(num){
+//			var lis = $("#musicIfo").find("li");
+			var imgSrc = lis.eq(num).attr("imgSrc");			
+			$("#singerPic").attr("src",imgSrc);
+//						$("#song").attr("src",arr[i]);
+            song.src = arr[num];
+//                      $("#pause").find("span").text("");
+            isPlay = 0;
+            $("#pause").find("span").html("&#xe63a;");
+		}
+		
+		
+		
+		function changeTime(time){
+			var fen = '';
+			var miao = '';
+			fen = Math.floor(time / 60);
+			miao = Math.floor(time - fen * 60);
+			if(fen < 10){
+				fen = "0" + fen;
+			}
+			if(miao < 10){
+				miao = "0" + miao;
+			}
+			return fen + ":" + miao;
+		}
+		
+//		function picStart(){
+//			var picXuan = document.getElementById("singerPic");
+//			picXuan.style.transitionDuration = "0.1s";
+//			picXuan.style.transitionProperty = "all";
+//			picXuan.style.transform = "rotate(0deg)";
+//		}
+		
+		
+		function changeDuration(){
+			var duration = song.duration;
+			$(".sec1Right").html(changeTime(duration));
+			ProgressBar.maxValue = duration;
+			
+			song.addEventListener("timeupdate",function(){
+			var currentTime = song.currentTime;
+			$(".sec1Miao").html(changeTime(currentTime));
+			ProgressBar.SetValue(currentTime);
+			});
+		}
+		
+//		function chushihua(num){
+//			$("#musicIfo").find("li").eq(num).addClass("on");
+//			beginMusic(num);
+////			changeTime(num);
+////			changeDuration();			
+//		}
+		
+		
+		
+		var toggleMenu = function(){
+			if (swiper.previousIndex == 0)
+				swiper.slidePrev();
+		}
+		, menuButton = document.getElementsByClassName('menu-button')[0]
+		, swiper = new Swiper('.swiper-container', {
+			slidesPerView: 'auto'
+			, initialSlide: 1
+			, resistanceRatio: .00000000000001
+			, onSlideChangeStart: function(slider) {
+				if (slider.activeIndex == 0) {
+					menuButton.classList.add('cross')
+					menuButton.removeEventListener('click', toggleMenu, false)
+				} else
+					menuButton.classList.remove('cross')
+			}
+			, onSlideChangeEnd: function(slider) {
+				if (slider.activeIndex == 0)
+					menuButton.removeEventListener('click', toggleMenu, false)
+				else
+					menuButton.addEventListener('click', toggleMenu, false)
+			}
+			, slideToClickedSlide: true
+		})
+		
+		
+
+        var ProgressBar = {
+            maxValue: 100,
+            value: 20,
+            SetValue: function (aValue) {
+                this.value = aValue;
+                if (this.value >= this.maxValue) this.value = this.maxValue;
+                if (this.value <= 0) this.value = 0;
+                var mWidth = this.value / this.maxValue * $("#progressBar").width() + "px";
+                $("#progressBar_Track").css("width", mWidth);
+            }
+        }
+	</script>
+</html>
