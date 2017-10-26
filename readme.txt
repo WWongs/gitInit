@@ -1,1 +1,1 @@
-This is my first obj for git.  gg  2
+这是我的小项目仓库。
