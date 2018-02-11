@@ -26,7 +26,7 @@
 							<div class="bar"></div>
 				            </div>
 						</li>
-						<li>右边痿哥音乐</li>
+						<li>我的音乐</li>
 						<li><span class="iconfont">&#xe650;</span></li>
 					</ul>
 				</header>
@@ -97,9 +97,7 @@
 			type:"get",
 			url:"json/pbl.json",
 			success:function(eve){
-//				console.log(eve);
 				for(var i=0; i<eve.length; i++){
-//					console.log(eve[i].src);
 					arr.push(eve[i].src);
 					$("#musicIfo").append("<li imgSrc="+eve[i].img+" musicSrc="+eve[i].src+"><p>"+eve[i].musicName+"</p><span>"+eve[i].name+"</span></li>");
 				}
@@ -111,14 +109,9 @@
 					index = $(this).index();
 					beginMusic(index);
 					if(isXuan == 1){
-//          	isXuan = 0;
             	proventXuan();
-//          	picStart();
             }
-					
-//					changeDuration();
 				});		
-//				chushihua(0);
 			}	
 		});
 		
@@ -127,7 +120,6 @@
 		$("#pause").click(function(){
 			if(isPlay == 0){
 				isPlay = 1;
-//				alert(song.src);
 				song.play();
 				$(this).find("span").html("&#xe66a;");
 				changeDuration();
@@ -144,14 +136,8 @@
 		
 		
 		$("#next").click(function(){
-//			alert(index);
-//          var lis = $("#musicIfo").find("li");
-//          alert(lis.length);
-
             if(isXuan == 1){
-//          	isXuan = 0;
             	proventXuan();
-//          	picStart();
             }
             if(index == lis.length - 1){
             	index = 0;
@@ -166,16 +152,9 @@
 		
 		
 		$("#prov").click(function(){
-//			alert(index);
-//          var lis = $("#musicIfo").find("li");
-//          alert(lis.length);
             if(isXuan == 1){
-//          	isXuan = 0;
             	proventXuan();
-            }
-            
-//          xuanzhuanPic();
-            
+            }    
             if(index == 0){
             	index = lis.length - 1;
             	lis.eq(index).addClass("on").siblings().removeClass("on");
@@ -200,19 +179,15 @@
 		}
 		
 		function proventXuan(){
-//          picXuan.style.animationName = "";
 		    var picXuan = document.getElementById("singerPic");
             picXuan.style.animationPlayState = "paused";
 		}
 		
 		
 		function beginMusic(num){
-//			var lis = $("#musicIfo").find("li");
 			var imgSrc = lis.eq(num).attr("imgSrc");			
 			$("#singerPic").attr("src",imgSrc);
-//						$("#song").attr("src",arr[i]);
             song.src = arr[num];
-//                      $("#pause").find("span").text("");
             isPlay = 0;
             $("#pause").find("span").html("&#xe63a;");
 		}
@@ -232,15 +207,7 @@
 			}
 			return fen + ":" + miao;
 		}
-		
-//		function picStart(){
-//			var picXuan = document.getElementById("singerPic");
-//			picXuan.style.transitionDuration = "0.1s";
-//			picXuan.style.transitionProperty = "all";
-//			picXuan.style.transform = "rotate(0deg)";
-//		}
-		
-		
+				
 		function changeDuration(){
 			var duration = song.duration;
 			$(".sec1Right").html(changeTime(duration));
@@ -252,15 +219,7 @@
 			ProgressBar.SetValue(currentTime);
 			});
 		}
-		
-//		function chushihua(num){
-//			$("#musicIfo").find("li").eq(num).addClass("on");
-//			beginMusic(num);
-////			changeTime(num);
-////			changeDuration();			
-//		}
-		
-		
+				
 		
 		var toggleMenu = function(){
 			if (swiper.previousIndex == 0)
